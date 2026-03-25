@@ -57,6 +57,7 @@ Future<LinkMenuAction> defaultLinkActionPickerDelegate(
     case TargetPlatform.iOS:
       return _showCupertinoLinkMenu(context, link);
     case TargetPlatform.android:
+    case TargetPlatform.ohos:
       return _showMaterialMenu(context, link);
     default:
       assert(
