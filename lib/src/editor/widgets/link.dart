@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -57,15 +59,11 @@ Future<LinkMenuAction> defaultLinkActionPickerDelegate(
     case TargetPlatform.iOS:
       return _showCupertinoLinkMenu(context, link);
     case TargetPlatform.android:
-    case TargetPlatform.ohos:
       return _showMaterialMenu(context, link);
     default:
-      assert(
-        false,
-        'defaultShowLinkActionsMenu not supposed to '
-        'be invoked for $defaultTargetPlatform. '
-        "it's only supported for iOS and Android.",
-      );
+      if(Platform.operatingSystem == 'ohos'){
+        return _showMaterialMenu(context, link);
+      }
       return LinkMenuAction.none;
   }
 }
