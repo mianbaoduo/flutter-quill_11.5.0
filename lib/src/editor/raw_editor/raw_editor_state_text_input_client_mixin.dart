@@ -113,6 +113,9 @@ mixin RawEditorStateTextInputClientMixin on EditorState
         }
       }
       _textInputConnection!.setEditingState(_lastKnownRemoteTextEditingValue!);
+    } else {
+      // 键盘可见性回调可能滞后；复用连接时也要同步刚移动的光标。
+      updateRemoteValueIfNeeded();
     }
     _textInputConnection!.show();
   }

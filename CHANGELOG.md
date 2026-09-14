@@ -10,6 +10,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- 复用已有输入连接时同步当前光标和选区，修复移动光标后输入文字仍回到旧位置的问题。
+
 ## [11.5.0] - 2025-10-18
 
 ### Fixed
