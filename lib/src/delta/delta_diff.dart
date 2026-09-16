@@ -33,6 +33,10 @@ class Diff {
 
 /* Get diff operation between old text and new text */
 Diff getDiff(String oldText, String newText, int cursorPosition) {
+  // 拖动选区时文本没有变化，不需要逐字扫描整篇文档。
+  if (oldText == newText) {
+    return Diff(start: math.max(0, cursorPosition), deleted: '', inserted: '');
+  }
   var end = oldText.length;
   final delta = newText.length - end;
   for (final limit = math.max(0, cursorPosition - delta);

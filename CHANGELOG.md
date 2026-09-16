@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- 拖动选区时跳过重复通知和未改动文本的逐字比对，放大镜及时跟随手指，减少长笔记选择文字的额外开销。
 - 复用已有输入连接时同步当前光标和选区，修复移动光标后输入文字仍回到旧位置的问题。
 
 ## [11.5.0] - 2025-10-18

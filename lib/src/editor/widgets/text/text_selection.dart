@@ -327,6 +327,12 @@ class EditorTextSelectionOverlay {
           )
         : null;
 
+    // 手柄在同一个字符内移动时，只保持滚动跟随，避免反复重建正文和工具栏。
+    if (currSelection == _selection) {
+      selectionDelegate.bringIntoView(textPosition);
+      return;
+    }
+
     update(value.copyWith(
       selection: currSelection,
       composing: TextRange.empty,
@@ -797,10 +803,10 @@ class _EditorTextSelectionGestureDetectorState
     super.dispose();
   }
 
-  // update magnifier location (hide if null) - this listener is called during a build phase
-  // when selection handles are being dragged, so update during the next build
+  // 拖动事件直接更新放大镜，只在构建期间延后，避免跟手位置总是落后一帧。
   void _dragOffsetListener() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    void updatePosition() {
+      if (!mounted) return;
       Offset? position;
 
       final globalPosition = widget.dragOffsetNotifier?.value;
@@ -810,12 +816,19 @@ class _EditorTextSelectionGestureDetectorState
         position = renderBox.globalToLocal(globalPosition);
       }
 
-      if (mounted) {
+      if (_magnifierPosition != position) {
         setState(() {
           _magnifierPosition = position;
         });
       }
-    });
+    }
+
+    if (SchedulerBinding.instance.schedulerPhase ==
+        SchedulerPhase.persistentCallbacks) {
+      SchedulerBinding.instance.addPostFrameCallback((_) => updatePosition());
+    } else {
+      updatePosition();
+    }
   }
 
   // The down handler is force-run on success of a single tap and optimistically
